@@ -148,8 +148,6 @@ Note: The implementation of this interface depends on the WebRTC native interfac
 1. with hardware acceleration on, the interface takes about 2s for Windows and 10s for Mac. 
 2. With hardware acceleration off, the interface takes 30s on both Windows and Mac.
 
-Translated with www.DeepL.com/Translator (free version)
-
 ```javascript
 const detect = new RTCDetect();
 const data = await detect.isTRTCSupported();
