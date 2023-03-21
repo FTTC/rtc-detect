@@ -91,31 +91,48 @@ const result = detect.getAPISupported();
 ### (async) getDevicesAsync()
 获取当前环境可用的设备。
 
-| Item                              | Type    |      Description       |
-| --------------------------------- | ------- | ---------------------- |
-| hasCameraPermission               | boolean | 是否授权使用摄像头        |
-| hasMicrophonePermission           | boolean | 是否授权使用麦克风        |
-| cameras                           | array   | 用户的摄像头设备列表，包含支持视频流的最大宽高和帧率 |
-| microphones                       | array   | 用户的麦克风设备列表        |
-| speakers                          | array   | 用户的扬声器设备列表        |
 
+| Item                    | Type                | Description                                        |
+|-------------------------|---------------------|----------------------------------------------------|
+| hasWebCamPermissions    | boolean             | 是否支持获取用户摄像头数据                                      |
+| hasMicrophonePermission | boolean             | 是否支持获取用户麦克风数据                                      |
+| cameras                 | array<CameraItem>   | 用户的摄像头设备列表，包含摄像头支持的分辨率信息，最大宽高以及最大帧率（最大帧率有部分浏览器不支持） |
+| microphones             | array<DeviceItem>   | 用户的麦克风设备列表                                         |
+| speakers                | array<DeviceItem>   | 用户的扬声器设备列表                                         |
+
+**CameraItem**
+
+| Item       | Type    | Description                                                          |
+|------------|---------|----------------------------------------------------------------------|
+| deviceId   | string  | 设备 ID， 通常是唯一的，可以用于采集识别设备                                             |
+| groupId    | string  | 组的标识符，如果两个设备属于同一个物理设备，他们就有相同的标识符                                     |
+| kind       | string  | 摄像头设备类型：'videoinput'                                                 |
+| label      | string  | 描述该设备的标签                                                             |
+| resolution | object  | 摄像头支持的最大分辨率的宽高和帧率 {maxWidth: 1280, maxHeight: 720, maxFrameRate: 30} |
+
+**DeviceItem**
+
+| Item     | Type     | Description                          |
+|----------|----------|--------------------------------------|
+| deviceId | string   | 设备 ID， 通常是唯一的，可以用于采集识别设备             |
+| groupId  | string   | 组的标识符，如果两个设备属于同一个物理设备，他们就有相同的标识符     |
+| kind     | string   | 设备类型，例如: 'audioinput', 'audiooutput' |
+| label    | string   | 描述该设备的标签                             |
 
 ```javascript
 const detect = new RTCDetect();
 const result = await detect.getDevicesAsync();
 ```
 
-
-
 ### (async) getCodecAsync()
 获取当前环境参数对编码的支持度。
 
-| Item                           | Type    |      Description    |
-| ------------------------------ | ------- | ------------------- |
-| isH264EncodeSupported          | boolean | 是否支持 h264 上行       |
-| isH264DecodeSupported          | boolean | 是否支持 h264 下行       |
-| isVp8EncodeSupported           | boolean | 是否支持 vp8 上行       |
-| isVp8DecodeSupported           | boolean | 是否支持 vp8 下行       |
+| Item                   | Type     | Description  |
+|------------------------|----------|--------------|
+| isH264EncodeSupported  | boolean  | 是否支持 h264 上行 |
+| isH264DecodeSupported  | boolean  | 是否支持 h264 下行 |
+| isVp8EncodeSupported   | boolean  | 是否支持 vp8 上行  |
+| isVp8DecodeSupported   | boolean  | 是否支持 vp8 下行  |
 
 
 ```javascript
@@ -161,6 +178,12 @@ if (data.result) {
 ```
 
 ## Changelog
+
+### Version 1.0.0 @2023.03.17
+
+**Bug Fixed**
+
+- 修复了 Safari 上资源占用问题。
 
 ### Version 0.0.5 @2022.02.09
 

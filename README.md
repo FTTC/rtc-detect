@@ -36,7 +36,7 @@ console.log('result is: ' + result);
 
 ## API
 ### (async) isTRTCSupported()
-Determines if the current environment supports TRTC.
+This API is used to check whether the current environment supports TRTC.
 
 ```javascript
 const detect = new RTCDetect();
@@ -51,15 +51,16 @@ if (data.result) {
 
 
 ### getSystem()
-Get the current system environment parameters.
 
-| Item              | Type   | Description                           |
-| ----------------- | ------ |---------------------------------------|
-| UA                | string | user agent                            |
-| OS                | string | system                                |
-| browser           | object | browser infomation: { name, version } |
-| displayResolution | object | resulution: { width, height }         |
-| getHardwareConcurrency | number | current device CPU core count         |
+This API is used to get the current system environment parameters.
+
+| Item                   | Type     | Description                           |
+|------------------------|----------|---------------------------------------|
+| UA                     | string   | user agent                            |
+| OS                     | string   | system                                |
+| browser                | object   | browser infomation: { name, version } |
+| displayResolution      | object   | resulution: { width, height }         |
+| getHardwareConcurrency | number   | current device CPU core count         |
 
 
 ```javascript
@@ -68,19 +69,20 @@ const result = detect.getSystem();
 ```
 
 ### getAPISupported()
-Get the current environment API support.
 
-| Item                              | Type    | Description                                                                                          |
-| --------------------------------- | ------- |------------------------------------------------------------------------------------------------------|
-| isUserMediaSupported              | boolean | whether to support getting user media from media device                                                  |
-| isWebRTCSupported                 | boolean | whether to support WebRTC                                                                            |
-| isWebSocketSupported              | boolean | whether to support WebSocket                                                                         |
-| isWebAudioSupported               | boolean | whether to support WebAudio                                                                          |
-| isScreenCaptureAPISupported       | boolean | whether to support getting media steam from screen                                                   |
-| isCanvasCapturingSupported        | boolean | whether to support getting media stream from canvas element                                              |
-| isVideoCapturingSupported         | boolean | whether to support getting media stream from video element                                               |
-| isRTPSenderReplaceTracksSupported | boolean | whether to support not renegotiating with peerConnection when replacing track                        |
-| isApplyConstraintsSupported       | boolean | whether to support changing the resolution of the camera without re-calling getUserMedia |
+This API is used to get the API support of the current environment.
+
+| Item                               | Type      | Description                                                                              |
+|------------------------------------|-----------|------------------------------------------------------------------------------------------|
+| isUserMediaSupported               | boolean   | whether to support getting user media from media device                                  |
+| isWebRTCSupported                  | boolean   | whether to support WebRTC                                                                |
+| isWebSocketSupported               | boolean   | whether to support WebSocket                                                             |
+| isWebAudioSupported                | boolean   | whether to support WebAudio                                                              |
+| isScreenCaptureAPISupported        | boolean   | whether to support getting media steam from screen                                       |
+| isCanvasCapturingSupported         | boolean   | whether to support getting media stream from canvas element                              |
+| isVideoCapturingSupported          | boolean   | whether to support getting media stream from video element                               |
+| isRTPSenderReplaceTracksSupported  | boolean   | whether to support not renegotiating with peerConnection when replacing track            |
+| isApplyConstraintsSupported        | boolean   | whether to support changing the resolution of the camera without re-calling getUserMedia |
 
 
 ```javascript
@@ -90,16 +92,35 @@ const result = detect.getAPISupported();
 
 
 ### (async) getDevicesAsync()
-Get the devices available for the current environment.
 
-| Item                              | Type    | Description                                                                           |
-| --------------------------------- | ------- |---------------------------------------------------------------------------------------|
-| hasCameraPermission               | boolean | whether to have camera permission                                                     |
-| hasMicrophonePermission           | boolean | whether to have microphone permission                                                 |
-| cameras                           | array   | User's camera device list with maximum aspect and frame rate of supported video streams |
-| microphones                       | array   | microphone list                                                                       |
-| speakers                          | array   | speaker list                                                                          |
+This API is used to get the available devices in the current environment.
 
+| Item                     | Type               | Description                                                                                                                                                                                           |
+|--------------------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| hasWebCamPermissions     | boolean            | Whether the user camera data can be obtained                                                                                                                                                          |
+| hasMicrophonePermission  | boolean            | Whether the user mic data can be obtained                                                                                                                                                             |
+| cameras                  | array<CameraItem>  | A list of the user's camera devices, including information on the resolution of supported video streams, maximum aspect and maximum frame rate (maximum frame rate is not supported by some browsers) |
+| microphones              | array<DeviceItem>  | A list of user mics                                                                                                                                                                                   |
+| speakers                 | array<DeviceItem>  | A list of user speakers                                                                                                                                                                               |
+
+**CameraItem**
+
+| Item       | Type    | Description                                                                                                                                                    |
+|------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| deviceId   | string  | Device ID, which is usually unique and can be used to capture identifying devices                                                                              |
+| groupId    | string  | Group identifier, two devices have the same group identifier if they belong to the same physical device                                                        |
+| kind       | string  | Camera device type: 'videoinput'                                                                                                                               |
+| label      | string  | Label describing this device                                                                                                                                   |
+| resolution | object  | Information about the camera's supported resolutions, maximum width and height, and maximum frame rate, eg: {maxWidth: 1280, maxHeight: 720, maxFrameRate: 30} |
+
+**DeviceItem**
+
+| Item     | Type     | Description                                                                                             |
+|----------|----------|---------------------------------------------------------------------------------------------------------|
+| deviceId | string   | Device ID, which is usually unique and can be used to capture identifying devices                       |
+| groupId  | string   | Group identifier, two devices have the same group identifier if they belong to the same physical device |
+| kind     | string   | Physical device type, eg: 'audioinput', 'audiooutput'                                                   |
+| label    | string   | Label describing this device                                                                            |
 
 ```javascript
 const detect = new RTCDetect();
@@ -109,14 +130,15 @@ const result = await detect.getDevicesAsync();
 
 
 ### (async) getCodecAsync()
-Get the support of the current environment parameters for encoding and decoding.
 
-| Item                           | Type    | Description                      |
-| ------------------------------ | ------- |----------------------------------|
-| isH264EncodeSupported          | boolean | whether to support h264 uplink   |
-| isH264DecodeSupported          | boolean | whether to support h264 downlink |
-| isVp8EncodeSupported           | boolean | whether to support vp8 uplink    |
-| isVp8DecodeSupported           | boolean | whether to support vp8 downlink    |
+This API is used to get the codec support of the current environment.
+
+| Item                   | Type      | Description                        |
+|------------------------|-----------|------------------------------------|
+| isH264EncodeSupported  | boolean   | whether to support h264 uplink     |
+| isH264DecodeSupported  | boolean   | whether to support h264 downlink   |
+| isVp8EncodeSupported   | boolean   | whether to support vp8 uplink      |
+| isVp8DecodeSupported   | boolean   | whether to support vp8 downlink    |
 
 
 ```javascript
@@ -125,14 +147,15 @@ const result = await detect.getCodecAsync();
 ```
 
 ### (async) getReportAsync()
-Get current environmental monitoring reports.
 
-| Item                 | Type    | Description                |
-| -------------------- | ------- |----------------------------|
-| system               | object  | same as getSystem() result |
-| APISupported         | object  | same as getAPISupported() result |
-| codecsSupported      | object  | same as getCodecAsync() result   |
-| devices              | object  | same as getDevicesAsync() result |
+This API is used to get the detection report of the current environment.
+
+| Item             | Type      | Description                        |
+|------------------|-----------|------------------------------------|
+| system           | object    | same as getSystem() result         |
+| APISupported     | object    | same as getAPISupported() result   |
+| codecsSupported  | object    | same as getCodecAsync() result     |
+| devices          | object    | same as getDevicesAsync() result   |
 
 
 ```javascript
@@ -142,11 +165,12 @@ const result = await detect.getReportAsync();
 
 ### (async) isHardWareAccelerationEnabled()
 
-Detects if Chrome is hardware acceleration enabled.
+This API is used to check whether hardware acceleration is enabled on the Chrome browser.
 
-Note: The implementation of this interface depends on the WebRTC native interface, so it is recommended to call this interface after isTRTCSupported detection support. The maximum detection time is 30 s. As tested: 
-1. with hardware acceleration on, the interface takes about 2s for Windows and 10s for Mac. 
-2. With hardware acceleration off, the interface takes 30s on both Windows and Mac.
+Note: the implementation of this API depends on the native WebRTC API. We recommend you call this API for check after calling `isTRTCSupported`. The check can take up to 30 seconds as tested below:
+
+1. If hardware acceleration is enabled, this API will take about 2 seconds on Windows and 10 seconds on macOS.
+2. If hardware acceleration is disabled, this API will take about 30 seconds on both Windows and macOS.
 
 ```javascript
 const detect = new RTCDetect();
@@ -161,6 +185,12 @@ if (data.result) {
 ```
 
 ## Changelog
+
+### Version 1.0.0 @2023.03.17
+
+**Bug Fixed**
+
+- Fixed resource usage on Safari.
 
 ### Version 0.0.5 @2022.02.11
 
